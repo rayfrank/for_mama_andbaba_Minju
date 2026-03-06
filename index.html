@@ -1,0 +1,904 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Happy Birthday • Mwaniki Family</title>
+  <style>
+    :root {
+      --bg0: #0d0c1e;
+      --bg1: #1a0f35;
+      --card: rgba(16, 18, 27, 0.45);
+      --text: rgba(255, 255, 255, 0.95);
+      --muted: rgba(255, 255, 255, 0.8);
+      --accent: #ff4fd8;
+      --accent2: #49d7ff;
+      --accent3: #ffc84a;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body,
+    html {
+      height: 100%;
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      color: var(--text);
+      overflow: hidden;
+      background: radial-gradient(circle at 15% 50%, rgba(255, 79, 216, 0.15), transparent 50%),
+        radial-gradient(circle at 85% 30%, rgba(73, 215, 255, 0.15), transparent 50%),
+        radial-gradient(circle at 50% 80%, rgba(255, 200, 74, 0.1), transparent 50%),
+        linear-gradient(135deg, var(--bg0), var(--bg1));
+      animation: bgBreathing 15s ease-in-out infinite alternate;
+    }
+
+    @keyframes bgBreathing {
+      0% {
+        background-position: 0% 50%;
+        background-size: 100% 100%;
+      }
+
+      100% {
+        background-position: 100% 50%;
+        background-size: 120% 120%;
+      }
+    }
+
+    canvas#c {
+      position: fixed;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      display: block;
+      z-index: 1;
+    }
+
+    .ui {
+      position: fixed;
+      inset: 0;
+      display: grid;
+      place-items: center;
+      pointer-events: none;
+      padding: 18px;
+      z-index: 2;
+      perspective: 1000px;
+    }
+
+    .card {
+      position: relative;
+      pointer-events: auto;
+      width: min(560px, 92vw);
+      border-radius: 24px;
+      background: linear-gradient(145deg, rgba(25, 20, 40, 0.6), rgba(10, 12, 24, 0.7));
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.6),
+        inset 0 0 20px rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      padding: 35px 30px;
+      animation: cardEntrance 1.5s cubic-bezier(0.2, 0.8, 0.2, 1) forwards, float 6s ease-in-out infinite 1.5s;
+      transform-style: preserve-3d;
+    }
+
+    /* Floating sparkles around the card edge */
+    .card::after,
+    .card::before {
+      content: '';
+      position: absolute;
+      inset: -2px;
+      border-radius: 26px;
+      background: linear-gradient(45deg, var(--accent), var(--accent2), var(--accent3), var(--accent), var(--accent2));
+      background-size: 400%;
+      z-index: -1;
+      animation: animateGlow 20s linear infinite;
+      opacity: 0;
+      transition: opacity 0.5s ease;
+    }
+
+    .card:hover::after,
+    .card:hover::before {
+      opacity: 0.3;
+    }
+
+    .card::before {
+      filter: blur(20px);
+      opacity: 0;
+    }
+
+    .card:hover::before {
+      opacity: 0.4;
+    }
+
+    @keyframes animateGlow {
+      0% {
+        background-position: 0 0;
+      }
+
+      50% {
+        background-position: 400% 0;
+      }
+
+      100% {
+        background-position: 0 0;
+      }
+    }
+
+    @keyframes cardEntrance {
+      0% {
+        transform: translateY(80px) rotateX(-15deg);
+        opacity: 0;
+      }
+
+      100% {
+        transform: translateY(0) rotateX(0);
+        opacity: 1;
+      }
+    }
+
+    @keyframes float {
+
+      0%,
+      100% {
+        transform: translateY(0px) rotateX(0deg);
+      }
+
+      50% {
+        transform: translateY(-12px) rotateX(2deg);
+      }
+    }
+
+    .badge {
+      display: inline-flex;
+      gap: 8px;
+      align-items: center;
+      padding: 6px 14px;
+      border-radius: 999px;
+      background: linear-gradient(90deg, rgba(255, 79, 216, 0.25), rgba(73, 215, 255, 0.25));
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      color: #fff;
+      font-weight: 700;
+      font-size: 13px;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      animation: pulseBadge 3s infinite;
+    }
+
+    @keyframes pulseBadge {
+
+      0%,
+      100% {
+        box-shadow: 0 0 8px rgba(255, 79, 216, 0.3);
+        transform: scale(1);
+      }
+
+      50% {
+        box-shadow: 0 0 18px rgba(73, 215, 255, 0.6);
+        transform: scale(1.05);
+      }
+    }
+
+    h1 {
+      margin: 20px 0 16px;
+      font-size: clamp(34px, 5.5vw, 50px);
+      line-height: 1.15;
+      letter-spacing: -0.02em;
+      background: linear-gradient(to right, #ff4fd8, #49d7ff, #7bff9a, #ffc84a);
+      background-size: 300% auto;
+      color: transparent;
+      -webkit-background-clip: text;
+      background-clip: text;
+      animation: shine 6s linear infinite;
+      text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    }
+
+    @keyframes shine {
+      to {
+        background-position: 300% center;
+      }
+    }
+
+    .sub {
+      margin: 12px 0 0;
+      color: var(--muted);
+      font-size: 16px;
+      line-height: 1.6;
+      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+    }
+
+    .row {
+      display: flex;
+      gap: 14px;
+      margin-top: 28px;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      appearance: none;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      background: rgba(255, 255, 255, 0.05);
+      color: #fff;
+      border-radius: 14px;
+      padding: 14px 24px;
+      font-size: 15px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+      position: relative;
+      overflow: hidden;
+      letter-spacing: 0.5px;
+    }
+
+    .btn::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 50%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+      transform: skewX(-20deg);
+      transition: 0.5s;
+    }
+
+    .btn:hover::before {
+      left: 150%;
+    }
+
+    .btn:hover {
+      transform: translateY(-3px);
+      background: rgba(255, 255, 255, 0.15);
+      border-color: rgba(255, 255, 255, 0.4);
+      box-shadow: 0 8px 25px rgba(255, 255, 255, 0.1);
+    }
+
+    .btn:active {
+      transform: translateY(1px);
+    }
+
+    .btn.primary {
+      border-color: transparent;
+      background: linear-gradient(135deg, #ff4fd8, #49d7ff);
+      box-shadow: 0 4px 20px rgba(255, 79, 216, 0.3);
+    }
+
+    .btn.primary:hover {
+      box-shadow: 0 8px 30px rgba(73, 215, 255, 0.5);
+      background: linear-gradient(135deg, #ff5def, #5ee0ff);
+    }
+
+    .hint {
+      margin-top: 24px;
+      padding-top: 16px;
+      border-top: 1px dashed rgba(255, 255, 255, 0.2);
+      color: rgba(255, 255, 255, 0.5);
+      font-size: 13px;
+      text-align: center;
+      font-style: italic;
+    }
+
+    .sig {
+      margin-top: 18px;
+      font-weight: 700;
+      font-size: 16px;
+      text-align: right;
+    }
+
+    .small {
+      font-weight: 500;
+      color: var(--accent2);
+      font-size: 13px;
+      display: block;
+      margin-top: 4px;
+    }
+
+    /* Ambient internal sparkles */
+    .sparkles {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      overflow: hidden;
+      border-radius: 24px;
+      z-index: -1;
+    }
+
+    .sparkle {
+      position: absolute;
+      width: 3px;
+      height: 3px;
+      background: #fff;
+      border-radius: 50%;
+      box-shadow: 0 0 10px #fff, 0 0 20px var(--accent);
+      animation: blink 3s infinite ease-in-out;
+    }
+
+    @keyframes blink {
+
+      0%,
+      100% {
+        opacity: 0;
+        transform: scale(0.5);
+      }
+
+      50% {
+        opacity: 1;
+        transform: scale(1.5);
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      * {
+        animation: none !important;
+        transition: none !important;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <canvas id="c"></canvas>
+
+  <div class="ui">
+    <div class="card">
+      <div class="sparkles">
+        <!-- Static ambient sparkles inside card -->
+        <div class="sparkle" style="top: 15%; left: 10%; animation-delay: 0s;"></div>
+        <div class="sparkle" style="top: 85%; left: 80%; animation-delay: 1s;"></div>
+        <div class="sparkle" style="top: 20%; left: 85%; animation-delay: 0.5s;"></div>
+        <div class="sparkle" style="top: 75%; left: 15%; animation-delay: 1.5s;"></div>
+        <div class="sparkle"
+          style="top: 45%; left: 90%; animation-delay: 2s; box-shadow: 0 0 10px #fff, 0 0 20px var(--accent2);"></div>
+      </div>
+
+      <div class="badge">✨ From Ray</div>
+      <h1>
+        Happy Birthday<br />
+        Mum &amp; Dad Mwaniki
+      </h1>
+      <p class="sub">
+        Hello mama and baba Minjuu I’m Ray, Minju's boyfriend. I wanted to send a small bit of magic your way today.
+        Mitchyyyy (Minjuuu) talks
+        about you with so much warmth and love, and I am truly looking forward to meeting you both one day.
+      </p>
+      <p class="sub">
+        Wishing you a wonderful birthday filled with laughter, good health, and sweet new memories. We hope this year
+        brings you both endless joy and blessings!
+      </p>
+      <div class="row" style="justify-content: center;">
+        <button id="celebrateBtn" class="btn primary" type="button">
+          Celebrate 🎉
+        </button>
+      </div>
+      <div class="hint">Tip: click/tap anywhere for confetti magic!</div>
+      <div class="sig">
+        Ray<br />
+        <span class="small">Mitchyyyy’s (Minjuuu’s) Ray</span>
+      </div>
+    </div>
+  </div>
+
+  <script type="module">
+    import * as THREE from "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js";
+
+    const canvas = document.getElementById("c");
+    const celebrateBtn = document.getElementById("celebrateBtn");
+
+    const renderer = new THREE.WebGLRenderer({
+      canvas,
+      antialias: true,
+      alpha: true,
+      powerPreference: "high-performance",
+    });
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+    renderer.setSize(window.innerWidth, window.innerHeight, false);
+
+    const scene = new THREE.Scene();
+
+    const camera = new THREE.PerspectiveCamera(
+      55,
+      window.innerWidth / window.innerHeight,
+      0.1,
+      200
+    );
+    camera.position.set(0, 1.2, 8.5);
+
+    const ambient = new THREE.AmbientLight(0xffffff, 0.75);
+    scene.add(ambient);
+    const dir = new THREE.DirectionalLight(0xffffff, 1.2);
+    dir.position.set(4, 8, 6);
+    scene.add(dir);
+
+    // Vibrant Soft glow in the back
+    const backGlow = new THREE.Mesh(
+      new THREE.SphereGeometry(22, 48, 48),
+      new THREE.MeshBasicMaterial({
+        color: 0x2d1b64,
+        transparent: true,
+        opacity: 0.25,
+        side: THREE.BackSide,
+      })
+    );
+    backGlow.position.set(-2, 2, -12);
+    scene.add(backGlow);
+
+    // Star field
+    const stars = (() => {
+      const count = 1500;
+      const positions = new Float32Array(count * 3);
+      const colors = new Float32Array(count * 3);
+      for (let i = 0; i < count; i++) {
+        const r = 70 * Math.random();
+        const theta = Math.random() * Math.PI * 2;
+        const phi = Math.acos(THREE.MathUtils.randFloatSpread(2));
+        positions[i * 3 + 0] = r * Math.sin(phi) * Math.cos(theta);
+        positions[i * 3 + 1] = r * Math.cos(phi);
+        positions[i * 3 + 2] = r * Math.sin(phi) * Math.sin(theta) - 18;
+
+        // Mixed star colors
+        const color = new THREE.Color();
+        const rmd = Math.random();
+        if (rmd > 0.8) color.setHex(0xffc84a);
+        else if (rmd > 0.6) color.setHex(0x49d7ff);
+        else color.setHex(0xffffff);
+
+        colors[i * 3 + 0] = color.r;
+        colors[i * 3 + 1] = color.g;
+        colors[i * 3 + 2] = color.b;
+      }
+      const geo = new THREE.BufferGeometry();
+      geo.setAttribute("position", new THREE.BufferAttribute(positions, 3));
+      geo.setAttribute("color", new THREE.BufferAttribute(colors, 3));
+
+      const mat = new THREE.PointsMaterial({
+        size: 0.08,
+        vertexColors: true,
+        sizeAttenuation: true,
+        transparent: true,
+        opacity: 0.8,
+        depthWrite: false,
+      });
+      const pts = new THREE.Points(geo, mat);
+      scene.add(pts);
+      return pts;
+    })();
+
+    // Shooting stars system
+    const shootingStars = [];
+    for (let i = 0; i < 4; i++) {
+      const geo = new THREE.BufferGeometry();
+      const points = [new THREE.Vector3(0, 0, 0), new THREE.Vector3(0, 0, -4)];
+      geo.setFromPoints(points);
+      const mat = new THREE.LineBasicMaterial({
+        color: 0xffffff,
+        transparent: true,
+        opacity: 0.0
+      });
+      const line = new THREE.Line(geo, mat);
+      scene.add(line);
+      shootingStars.push({
+        mesh: line,
+        reset: function () {
+          this.mesh.position.set(
+            THREE.MathUtils.randFloat(10, 30),
+            THREE.MathUtils.randFloat(5, 20),
+            THREE.MathUtils.randFloat(-10, -30)
+          );
+          this.speed = THREE.MathUtils.randFloat(20, 40);
+          this.delay = Math.random() * 8;
+          this.mesh.material.opacity = 0;
+        }
+      });
+      shootingStars[i].reset();
+    }
+
+    // Fireflies / Magic Dust
+    const magicDust = (() => {
+      const count = 80;
+      const positions = new Float32Array(count * 3);
+      const phases = new Float32Array(count);
+      for (let i = 0; i < count; i++) {
+        positions[i * 3 + 0] = THREE.MathUtils.randFloatSpread(25);
+        positions[i * 3 + 1] = THREE.MathUtils.randFloat(-5, 10);
+        positions[i * 3 + 2] = THREE.MathUtils.randFloat(-5, 5);
+        phases[i] = Math.random() * Math.PI * 2;
+      }
+      const geo = new THREE.BufferGeometry();
+      geo.setAttribute("position", new THREE.BufferAttribute(positions, 3));
+
+      // Generate circular particle 
+      const canvas = document.createElement('canvas');
+      canvas.width = 32; canvas.height = 32;
+      const context = canvas.getContext('2d');
+      const gradient = context.createRadialGradient(16, 16, 0, 16, 16, 16);
+      gradient.addColorStop(0, 'rgba(255,255,255,1)');
+      gradient.addColorStop(0.3, 'rgba(255,200,74,0.8)');
+      gradient.addColorStop(1, 'rgba(0,0,0,0)');
+      context.fillStyle = gradient;
+      context.fillRect(0, 0, 32, 32);
+      const texture = new THREE.CanvasTexture(canvas);
+
+      const mat = new THREE.PointsMaterial({
+        size: 0.4,
+        map: texture,
+        transparent: true,
+        opacity: 0.6,
+        depthWrite: false,
+        blending: THREE.AdditiveBlending
+      });
+      const pts = new THREE.Points(geo, mat);
+      scene.add(pts);
+
+      return { pts, positions, phases, count, geo };
+    })();
+
+    function makeCanvasSpriteText(lines) {
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      const w = 1024;
+      const h = 512;
+      const cvs = document.createElement("canvas");
+      cvs.width = Math.floor(w * dpr);
+      cvs.height = Math.floor(h * dpr);
+      const ctx = cvs.getContext("2d");
+      ctx.scale(dpr, dpr);
+
+      // Richer Gradient
+      const grad = ctx.createLinearGradient(0, 0, w, 0);
+      grad.addColorStop(0, "rgba(255,79,216,1)");
+      grad.addColorStop(0.5, "rgba(73,215,255,1)");
+      grad.addColorStop(1, "rgba(255,200,74,1)");
+
+      ctx.clearRect(0, 0, w, h);
+
+      // Glow Border
+      ctx.fillStyle = "rgba(255,255,255,0.08)";
+      roundRect(ctx, 48, 76, w - 96, h - 152, 32);
+      ctx.fill();
+
+      ctx.strokeStyle = "rgba(255,255,255,0.25)";
+      ctx.lineWidth = 3;
+      roundRect(ctx, 48, 76, w - 96, h - 152, 32);
+      ctx.stroke();
+
+      ctx.textAlign = "center";
+      ctx.textBaseline = "middle";
+      ctx.font = "800 58px 'Segoe UI', system-ui, Roboto, Arial";
+      ctx.fillStyle = grad;
+      ctx.shadowColor = "rgba(255,79,216,0.6)";
+      ctx.shadowBlur = 24;
+      ctx.fillText(lines[0], w / 2, h / 2 - 35);
+
+      ctx.font = "700 34px 'Segoe UI', system-ui, Roboto, Arial";
+      ctx.shadowColor = "rgba(73,215,255,0.4)";
+      ctx.shadowBlur = 18;
+      ctx.fillStyle = "rgba(255,255,255,0.95)";
+      ctx.fillText(lines[1], w / 2, h / 2 + 40);
+
+      const tex = new THREE.CanvasTexture(cvs);
+      tex.colorSpace = THREE.SRGBColorSpace;
+      tex.minFilter = THREE.LinearFilter;
+      tex.magFilter = THREE.LinearFilter;
+      const mat = new THREE.SpriteMaterial({ map: tex, transparent: true });
+      const sprite = new THREE.Sprite(mat);
+      sprite.scale.set(7.8, 3.9, 1);
+      return sprite;
+    }
+
+    function roundRect(ctx, x, y, w, h, r) {
+      const rr = Math.min(r, w / 2, h / 2);
+      ctx.beginPath();
+      ctx.moveTo(x + rr, y);
+      ctx.arcTo(x + w, y, x + w, y + h, rr);
+      ctx.arcTo(x + w, y + h, x, y + h, rr);
+      ctx.arcTo(x, y + h, x, y, rr);
+      ctx.arcTo(x, y, x + w, y, rr);
+      ctx.closePath();
+    }
+
+    function getRecipientLine() {
+      const h1 = document.querySelector(".card h1");
+      if (!h1) return "Mum & Dad Mwaniki";
+      const lines = (h1.innerText || "")
+        .replace(/\r/g, "")
+        .split("\n")
+        .map((s) => s.trim())
+        .filter(Boolean);
+      if (lines.length >= 2) return lines[lines.length - 1];
+      const only = lines[0] || "";
+      if (/happy\s+birthday/i.test(only)) return "Mum & Dad Mwaniki";
+      return only || "Mum & Dad Mwaniki";
+    }
+
+    const greeting = makeCanvasSpriteText(["HAPPY BIRTHDAY", getRecipientLine()]);
+    greeting.position.set(0, 2.4, -2.5);
+    scene.add(greeting);
+
+    // Balloon factory
+    const balloonColors = [0xff4fd8, 0x49d7ff, 0xffc84a, 0x7bff9a, 0xb38bff, 0xff5e5e];
+    const balloons = [];
+    const balloonGeo = new THREE.SphereGeometry(0.5, 32, 32);
+    balloonGeo.scale(1, 1.15, 1);
+
+    const knotGeo = new THREE.ConeGeometry(0.08, 0.16, 16);
+    const stringMat = new THREE.LineBasicMaterial({
+      color: 0xffffff,
+      transparent: true,
+      opacity: 0.4,
+    });
+
+    function makeBalloon() {
+      const color = balloonColors[(Math.random() * balloonColors.length) | 0];
+      const mat = new THREE.MeshPhysicalMaterial({
+        color,
+        roughness: 0.15,
+        metalness: 0.1,
+        clearcoat: 0.8,
+        clearcoatRoughness: 0.2,
+        emissive: new THREE.Color(color).multiplyScalar(0.15),
+      });
+      const mesh = new THREE.Mesh(balloonGeo, mat);
+
+      const knot = new THREE.Mesh(
+        knotGeo,
+        new THREE.MeshStandardMaterial({
+          color: color,
+          roughness: 0.5,
+        })
+      );
+      knot.position.set(0, -0.62, 0);
+      knot.rotation.x = Math.PI;
+      mesh.add(knot);
+
+      const points = [];
+      const p0 = new THREE.Vector3(0, -0.7, 0);
+      const p1 = new THREE.Vector3(
+        THREE.MathUtils.randFloatSpread(0.2),
+        -2.8 - Math.random() * 1.5,
+        THREE.MathUtils.randFloatSpread(0.2)
+      );
+
+      const pMid = new THREE.Vector3(
+        (p0.x + p1.x) / 2 + THREE.MathUtils.randFloatSpread(0.2),
+        (p0.y + p1.y) / 2,
+        (p0.z + p1.z) / 2 + THREE.MathUtils.randFloatSpread(0.2)
+      );
+
+      const curve = new THREE.QuadraticBezierCurve3(p0, pMid, p1);
+      const curvePoints = curve.getPoints(10);
+      const lineGeo = new THREE.BufferGeometry().setFromPoints(curvePoints);
+
+      const line = new THREE.Line(lineGeo, stringMat);
+      mesh.add(line);
+
+      const g = new THREE.Group();
+      g.add(mesh);
+      g.position.set(
+        THREE.MathUtils.randFloatSpread(10),
+        -2.5 - Math.random() * 3,
+        -4 - Math.random() * 6
+      );
+      g.userData = {
+        drift: THREE.MathUtils.randFloat(0.2, 0.5),
+        sway: THREE.MathUtils.randFloat(0.5, 1.5),
+        wobble: THREE.MathUtils.randFloat(0.3, 1.0),
+        phase: Math.random() * Math.PI * 2,
+      };
+      scene.add(g);
+      balloons.push(g);
+    }
+
+    for (let i = 0; i < 18; i++) makeBalloon();
+
+    // Confetti system
+    const confetti = (() => {
+      const max = 3000;
+      const positions = new Float32Array(max * 3);
+      const velocities = new Float32Array(max * 3);
+      const colors = new Float32Array(max * 3);
+      const life = new Float32Array(max);
+
+      const geo = new THREE.BufferGeometry();
+      geo.setAttribute("position", new THREE.BufferAttribute(positions, 3));
+      geo.setAttribute("color", new THREE.BufferAttribute(colors, 3));
+
+      const canvas = document.createElement('canvas');
+      canvas.width = 16; canvas.height = 16;
+      const context = canvas.getContext('2d');
+      context.fillStyle = '#ffffff';
+      context.fillRect(0, 0, 16, 16);
+      const texture = new THREE.CanvasTexture(canvas);
+
+      const mat = new THREE.PointsMaterial({
+        size: 0.12,
+        map: texture,
+        vertexColors: true,
+        transparent: true,
+        opacity: 0.95,
+        depthWrite: false,
+        alphaTest: 0.1
+      });
+      const pts = new THREE.Points(geo, mat);
+      pts.frustumCulled = false;
+      scene.add(pts);
+
+      let head = 0;
+      function spawnBurst(origin, strength = 1) {
+        const burstCount = Math.floor(500 * strength);
+        for (let i = 0; i < burstCount; i++) {
+          const idx = head % max;
+          head++;
+
+          const a = Math.random() * Math.PI * 2;
+          const u = Math.random();
+          const v = Math.random();
+          const spread = 0.8 + Math.random() * 2.0;
+          const vx = Math.cos(a) * spread * (0.8 + 0.6 * u);
+          const vy = 1.35 * (0.4 + 1.2 * v);
+          const vz = THREE.MathUtils.randFloat(-0.4, 0.4);
+
+          positions[idx * 3 + 0] = origin.x + THREE.MathUtils.randFloatSpread(0.2);
+          positions[idx * 3 + 1] = origin.y + THREE.MathUtils.randFloatSpread(0.2);
+          positions[idx * 3 + 2] = origin.z + THREE.MathUtils.randFloatSpread(0.2);
+
+          velocities[idx * 3 + 0] = vx * (0.9 + Math.random() * 0.8);
+          velocities[idx * 3 + 1] = vy * (0.9 + Math.random() * 0.8);
+          velocities[idx * 3 + 2] = vz + THREE.MathUtils.randFloatSpread(0.6);
+
+          const c = new THREE.Color(
+            balloonColors[(Math.random() * balloonColors.length) | 0]
+          );
+          colors[idx * 3 + 0] = c.r;
+          colors[idx * 3 + 1] = c.g;
+          colors[idx * 3 + 2] = c.b;
+          life[idx] = THREE.MathUtils.randFloat(2.0, 4.5);
+        }
+        geo.attributes.position.needsUpdate = true;
+        geo.attributes.color.needsUpdate = true;
+      }
+
+      function update(dt, wind = 0.0) {
+        for (let i = 0; i < max; i++) {
+          if (life[i] <= 0) continue;
+          life[i] -= dt;
+          const j = i * 3;
+          velocities[j + 1] -= 2.8 * dt; // gravity
+          velocities[j + 0] += wind * dt;
+
+          velocities[j + 0] *= 0.98;
+          velocities[j + 2] *= 0.98;
+
+          positions[j + 0] += velocities[j + 0] * dt + Math.sin(life[i] * 5) * 0.02; // flutter
+          positions[j + 1] += velocities[j + 1] * dt;
+          positions[j + 2] += velocities[j + 2] * dt;
+
+          if (positions[j + 1] < -8.5) life[i] = 0;
+        }
+        geo.attributes.position.needsUpdate = true;
+      }
+
+      return { spawnBurst, update };
+    })();
+
+    let energy = 1.0;
+    const reduceMotion =
+      window.matchMedia &&
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (reduceMotion) energy = 0.2;
+
+    celebrateBtn.addEventListener("click", () => {
+      energy = Math.min(1.4, energy + 0.3);
+      confetti.spawnBurst(new THREE.Vector3(0, 0.6, -2.5), 1.25);
+
+      camera.position.x += THREE.MathUtils.randFloatSpread(0.2);
+      camera.position.y += THREE.MathUtils.randFloatSpread(0.2);
+    });
+
+    function burstFromPointer(clientX, clientY) {
+      const ndc = new THREE.Vector2(
+        (clientX / window.innerWidth) * 2 - 1,
+        -(clientY / window.innerHeight) * 2 + 1
+      );
+      const ray = new THREE.Raycaster();
+      ray.setFromCamera(ndc, camera);
+      const p = ray.ray.at(5.5, new THREE.Vector3());
+      confetti.spawnBurst(p, 1.0);
+    }
+
+    window.addEventListener("pointerdown", (e) => {
+      if (reduceMotion) return;
+      if (e.target.tagName !== 'BUTTON') {
+        burstFromPointer(e.clientX, e.clientY);
+      }
+    });
+
+    function onResize() {
+      const w = window.innerWidth;
+      const h = window.innerHeight;
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+      renderer.setSize(w, h, false);
+      camera.aspect = w / h;
+      camera.updateProjectionMatrix();
+    }
+    window.addEventListener("resize", onResize);
+
+    let last = performance.now();
+    function tick(now) {
+      const dt = Math.min(0.033, (now - last) / 1000);
+      last = now;
+      const t = now * 0.001;
+
+      const tgtX = Math.sin(t * 0.3) * 0.25;
+      const tgtY = 1.2 + Math.sin(t * 0.35) * 0.15;
+      camera.position.x += (tgtX - camera.position.x) * 0.1;
+      camera.position.y += (tgtY - camera.position.y) * 0.1;
+      camera.lookAt(0, 1.4, -3.5);
+
+      greeting.position.y = 2.4 + Math.sin(t * 0.7) * 0.15;
+      greeting.rotation.z = Math.sin(t * 0.4) * 0.02;
+      greeting.material.opacity = 0.95;
+
+      stars.material.opacity = 0.5 + Math.sin(t * 0.6) * 0.15;
+      stars.rotation.y = t * 0.025;
+      stars.rotation.x = t * 0.01;
+
+      for (const s of shootingStars) {
+        if (s.delay > 0) {
+          s.delay -= dt;
+          continue;
+        }
+        s.mesh.position.x -= s.speed * dt;
+        s.mesh.position.y -= s.speed * dt * 0.4;
+        s.mesh.material.opacity = 0.8;
+
+        if (s.mesh.position.x < -25 || s.mesh.position.y < -15) {
+          s.reset();
+        }
+      }
+
+      for (let i = 0; i < magicDust.count; i++) {
+        const px = magicDust.positions[i * 3 + 0];
+        const py = magicDust.positions[i * 3 + 1];
+        const pz = magicDust.positions[i * 3 + 2];
+        const phase = magicDust.phases[i];
+
+        magicDust.geo.attributes.position.setXYZ(
+          i,
+          px + Math.sin(t * 0.8 + phase) * 0.5,
+          py + Math.cos(t * 0.6 + phase) * 0.5,
+          pz + Math.sin(t * 0.7 + phase) * 0.5
+        );
+      }
+      magicDust.geo.attributes.position.needsUpdate = true;
+
+      for (const b of balloons) {
+        b.position.y += dt * (0.6 + 0.8 * energy) * b.userData.drift;
+        b.position.x += Math.sin(t * b.userData.sway + b.userData.phase) * dt * 0.15;
+        b.rotation.z = Math.sin(t * 1.1 + b.userData.phase) * 0.08;
+        b.rotation.x = Math.sin(t * 0.8 + b.userData.phase) * 0.06;
+
+        if (b.position.y > 6.5) {
+          b.position.y = -7.5 - Math.random() * 3;
+          b.position.x = THREE.MathUtils.randFloatSpread(10);
+          b.position.z = -4 - Math.random() * 6;
+          b.userData.phase = Math.random() * Math.PI * 2;
+        }
+      }
+
+      const wind = Math.sin(t * 0.7) * 0.8 * energy;
+      confetti.update(dt, wind);
+
+      renderer.render(scene, camera);
+      requestAnimationFrame(tick);
+    }
+    requestAnimationFrame(tick);
+
+    setTimeout(() => {
+      if (reduceMotion) return;
+      confetti.spawnBurst(new THREE.Vector3(0, 0.8, -2.5), 0.7);
+    }, 600);
+  </script>
+</body>
+
+</html>
